@@ -5,4 +5,5 @@ public class location {
     public double locx;
     public double locy;
     public String description;
+    public String image;
 }

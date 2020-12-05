@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"/>
+        android:layout_width="202dp"
+        android:layout_height="176dp"
+        android:contentDescription="@string/title_activity_maps"
+        android:textStyle="bold"
+        app:srcCompat="@android:drawable/divider_horizontal_bright"
+        tools:srcCompat="?attr/dividerVertical" />
 
     <TextView
         android:id="@+id/tv_subtitle"

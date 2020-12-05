@@ -139,9 +139,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         loc.locx = 54.993505;
         loc.locy = -7.33697;
         loc.description = "It was at this place that" +
-                " Johnathan Swift inventor of the Swift programming language" +
+                " Johnathan Swift, the inventor of the Swift programming language" +
                 " got the idea to write" +
                 " things that happened down";
+        loc.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Jonathan_Swift_by_Charles_Jervas_detail.jpg/330px-Jonathan_Swift_by_Charles_Jervas_detail.jpg";
         //  loc = db.getlocation(location.getLatitude(), location.getLongitude());
         if (loc != null) {
            // locs.add(loc);
@@ -159,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                            .snippet(loc.description)
                             .icon(BitmapDescriptorFactory
                                     .defaultMarker(BitmapDescriptorFactory.HUE_GREEN))); */
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this);
+        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this, loc.image);
         mMap.setInfoWindowAdapter(adapter);
 
         mMap.addMarker(markeropt).showInfoWindow();

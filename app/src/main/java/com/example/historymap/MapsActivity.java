@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -33,6 +34,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager lm;
     LocationListener locationListener;
     DatabaseHelper db;
+    CustomInfoWindowAdapter adapter;
 
 
 
@@ -144,14 +146,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 " things that happened down";
         loc.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Jonathan_Swift_by_Charles_Jervas_detail.jpg/330px-Jonathan_Swift_by_Charles_Jervas_detail.jpg";
         //  loc = db.getlocation(location.getLatitude(), location.getLongitude());
-        if (loc != null) {
-           // locs.add(loc);
-        }
+        //            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        location loc2 = new location();
+        loc2.name = "The death of Cu Culainn ";
+        loc2.locx = 53.974505;
+        loc2.locy = 6.465919;
+        loc2.description = "It was at this aproximate place that" +
+                " The hero Cu Chulainn died after being struck " +
+                "by one of three spears each fortold to slay a king " +
+                "he tied himself to a rock so that he may die standing up.";
+        loc2.image = "https://upload.wikimedia.org/wikipedia/commons/4/4a/Cuchulainn%27s_death%2C_illustration_by_Stephen_Reid_1904.jpg";
         //  }
         //  }
         //  for (int i = 0; i < locs.size(); i++){
         LatLng q = new LatLng(loc.locx, loc.locy);
+        LatLng r = new LatLng(loc2.locx, loc2.locy);
         MarkerOptions markeropt = new MarkerOptions();
+        MarkerOptions markeropt2 = new MarkerOptions();
         markeropt = markeropt.position(q).title(loc.name)
                 .snippet(loc.description)
                 .icon(BitmapDescriptorFactory
@@ -160,18 +171,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                            .snippet(loc.description)
                             .icon(BitmapDescriptorFactory
                                     .defaultMarker(BitmapDescriptorFactory.HUE_GREEN))); */
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this, loc.image);
+        markeropt2 = markeropt2.position(r).title(loc2.name)
+                .snippet(loc2.description)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        adapter = new CustomInfoWindowAdapter(this, loc.image);
+        //CustomInfoWindowAdapter adapter2 = new CustomInfoWindowAdapter(this, loc2.image);
+
         mMap.setInfoWindowAdapter(adapter);
+        //mMap.setInfoWindowAdapter(adapter2);
 
         mMap.addMarker(markeropt).showInfoWindow();
+        mMap.addMarker(markeropt2);
 
     }
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        marker.showInfoWindow();
+        System.out.println(marker.getId());
+        if(marker.getId().equals("m0")){
+            try {
+                adapter.SetImage("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Jonathan_Swift_by_Charles_Jervas_detail.jpg/330px-Jonathan_Swift_by_Charles_Jervas_detail.jpg");
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(marker.getId().equals("m1")){
+            try {
+                adapter.SetImage("https://upload.wikimedia.org/wikipedia/commons/4/4a/Cuchulainn%27s_death%2C_illustration_by_Stephen_Reid_1904.jpg");
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        return false;
+        }
+        marker.showInfoWindow();
+        return true;
     }
 
 

@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.HttpURLConnection;
 import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -84,7 +84,9 @@ public class CustomInfoWindowAdapter extends AppCompatActivity implements Google
         TextView tvSubTitle = (TextView) view.findViewById(R.id.tv_subtitle);
 
         //tvTitle.setText(marker.getTitle());
+
         img.setImageBitmap(bit);
+
         tvSubTitle.setText(marker.getSnippet());
 
         return view;
@@ -136,6 +138,11 @@ public class CustomInfoWindowAdapter extends AppCompatActivity implements Google
             Log.d("NetworkingActivity", e1.getLocalizedMessage());
         }
         return bitmap;
+    }
+
+    public void SetImage(String img) throws ExecutionException, InterruptedException {
+        url = img;
+        bit = new DownloadImageTask().execute(url).get();
     }
 }
 

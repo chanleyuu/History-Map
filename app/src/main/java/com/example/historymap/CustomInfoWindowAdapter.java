@@ -88,7 +88,7 @@ public class CustomInfoWindowAdapter extends AppCompatActivity implements Google
 
         img.setImageBitmap(bit);
 
-        tvSubTitle.setText(marker.getSnippet());
+        tvSubTitle.setText(marker.getTitle() + " " + marker.getSnippet());
 
         return view;
     }

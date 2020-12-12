@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table mark(name text primary key, locx real, locy real, description text)");
+        db.execSQL("create table mark(name text primary key, type text, locx real, locy real, description text, url text)");
     }
 
     @Override
@@ -24,34 +24,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists location");
     }
 
-    public boolean addlocation(double locx, double locy, String name, String description) {
+    public boolean addlocation(location l) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("locx", locx);
-        contentValues.put("locy", locy);
-        contentValues.put("description", description);
+        contentValues.put("name", l.name);
+        contentValues.put("type", l.type);
+        contentValues.put("locx", l.locx);
+        contentValues.put("locy", l.locy);
+        contentValues.put("description", l.description);
+        contentValues.put("url", l.image);
         long ins = db.insert("mark", null, contentValues);
         if (ins==-1) return false;
         else return true;
     }
 
-    public location getlocation(double inx, double iny)
+    public location getlocation(String type)
     {
         double locx = 0.0, locy = 0.0;
         //double[] out = {locx, locy};
         SQLiteDatabase db= this.getReadableDatabase();
-        Cursor yes = db.rawQuery("Select * from mark where locx>? and locx - 10<? or" +
-                " locx<? and locx + 10>? or" +
-                " locy>? and locy - 10<? or" +
-                " locy<? and locy + 10>? Limit 1", new String[]{String.valueOf(inx), String.valueOf(iny)});
+        Cursor yes = db.rawQuery("Select * from mark where type=? ", new String[]{type});
         location out = new location();
         if (yes.moveToFirst()) {
+                out.type = yes.getString(yes.getColumnIndex("type"));
                 out.name = yes.getString(yes.getColumnIndex("name"));
                 out.locx = yes.getFloat(yes.getColumnIndex("locx"));
 
                 out.locy = yes.getFloat(yes.getColumnIndex("locy"));
-                out.description = yes.getString(yes.getColumnIndex(""));
+                out.description = yes.getString(yes.getColumnIndex("description"));
+                out.image = yes.getString(yes.getColumnIndex("url"));
         }
         return out;
     }

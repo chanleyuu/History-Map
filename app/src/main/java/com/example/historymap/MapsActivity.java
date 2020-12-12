@@ -260,12 +260,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void addLocation(double x, double y, String name, String description, String url){
+        db = new DatabaseHelper(this);
         location loc = new location();
+        loc.type = "Restaurants";
         loc.name = name;
         loc.description = description;
         loc.locx = x;
         loc.locy = y;
         loc.image = url;
+       // db.addlocation(loc);
         locations.add(loc);
     }
 
